@@ -193,9 +193,11 @@ def draw_lattice(n):
 # draw the lattice and get the adjacency list
 adj_list = draw_lattice(n = 8)
 
-# print the origin as an example
-print('Neighbors of (0,0):')
-print(adj_list['0,0'])
+# print the adjacency list
+for point in list(adj_list.keys()):
+    s = str(adj_list[point])
+    print('('+point+'): '+s)
+    
 
 
 
