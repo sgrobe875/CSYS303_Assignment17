@@ -4,6 +4,7 @@
 # imports
 import matplotlib.pyplot as plt
 import numpy as np
+import math
 
 
 
@@ -22,8 +23,20 @@ import numpy as np
 
 
 
+def get_float_coords(coord_string):
+    coord = coord_string.split(',')
+    x = float(coord[0])
+    y = float(coord[1])
+    return x, y
 
 
+def calc_distance(coord1_string, coord2_string):
+    x1, y1 = get_float_coords(coord1_string)
+    
+    x2, y2 = get_float_coords(coord2_string)
+    
+    return math.sqrt((x1-x2)**2 + (y1-y2)**2)
+    
 
 
 
@@ -138,8 +151,13 @@ end_x += 0.5
 
 
 
-
-
+# set neighbors of each point
+for point1 in points:
+    for point2 in points:
+        if point1 != point2:
+            dist = calc_distance(point1, point2)
+            if dist < 1.2:
+                points[point1].append(point2)
 
 
 
@@ -150,17 +168,29 @@ end_x += 0.5
 for v in vertices:   
     plt.scatter(v['x'], v['y'], color = 'blue')
     
-# now plot the contents of the points dict
-x = []
-y = []
+    
+    
+# plot lines between all neighbors
 for point in list(points.keys()):
-    values = point.split(',')
-    plt.scatter(float(values[0]), float(values[1]), color = 'red')
+    point_x, point_y = get_float_coords(point)
+    x = [point_x]
+    y = [point_y]
     
+    neighbors = points[point]
+    for neighbor in neighbors:
+        x_n, y_n = get_float_coords(neighbor)
+        x.append(x_n)
+        x.append(point_x)
+        y.append(y_n)
+        y.append(point_y)
     
+    plt.plot(x, y, color = 'black', zorder = 1)
     
-    
-    
+
+# now plot the contents of the points dict
+for point in list(points.keys()):
+    x, y = get_float_coords(point)
+    plt.scatter(x, y, color = 'red', zorder = 2)
     
     
     
