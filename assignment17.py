@@ -67,7 +67,7 @@ def draw_lattice(n):
     
     # build dictionary to hold non-vertex points
     # key = tuple of (x,y) coordinates of the point
-    # value = adjacency list (empty list for now)
+    # value = adjacency list (empty set for now)
     
     points = dict()
     
@@ -82,14 +82,14 @@ def draw_lattice(n):
         # start at vertex1 and add to the points dictionary
         x = start_x
         key = str(x) + ',' + str(y)
-        points[key] = []
+        points[key] = set()
         
         # while we're within the bounds of this row
         while x != end_x:
             # add points, moving across the row from left to right
             x += 1
             key = str(x) + ',' + str(y)
-            points[key] = []
+            points[key] = set()
         
         # when we've reached the end of the row, move up 1 to the next row
         y += 1
@@ -113,13 +113,13 @@ def draw_lattice(n):
         # add the first point in the row to the points dict
         x = start_x
         key = str(x) + ',' + str(y)
-        points[key] = []
+        points[key] = set()
         
         # move across the row within the bounds of the hexagon
         while x != end_x:
             x += 1
             key = str(x) + ',' + str(y)
-            points[key] = []
+            points[key] = set()
             
         # move down to the next row
         y -= 1
@@ -137,14 +137,17 @@ def draw_lattice(n):
                 # calculate the distance between the two points
                 dist = calc_distance(point1, point2)
                 # if the two points are close enough, they are neighbors, so add to 
-                # the neighbor list for point1
+                # the neighbor list for point1 and for point2
                 if dist < 1.2:
-                    points[point1].append(point2)
+                    # since neighbor list is a set, duplicates will just be skipped
+                    points[point1].add(point2)
+                    points[point2].add(point1)
 
     
     
     # finally, plot
-
+    fig = plt.figure()
+    ax = fig.add_subplot()
         
     # plot lines between all neighbors
     for point in list(points.keys()):
@@ -165,15 +168,13 @@ def draw_lattice(n):
             y.append(y_n)
             y.append(point_y)
         
-        # plot and move on to the next point
-        plt.plot(x, y, color = 'black', zorder = 1)
+        # plot and move on to the next point; scale point size based on n
+        plt.plot(x, y, color = 'black', marker=".", markersize=100/n)
         
+
+    # make the figure a square        
+    ax.set_aspect('equal', adjustable='box')
     
-    # now plot point locations themselves
-    for point in list(points.keys()):
-        x, y = get_float_coords(point)
-        plt.scatter(x, y, color = 'red', zorder = 2)
-        
     plt.show()
     
     # return the adjacency list
