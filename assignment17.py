@@ -168,8 +168,10 @@ def draw_lattice(n):
             y.append(y_n)
             y.append(point_y)
         
-        # plot and move on to the next point; scale point size based on n
-        plt.plot(x, y, color = 'black', marker=".", markersize=100/n)
+        # plot and move on to the next point
+        # scale point size and line width based on n; make points a different color
+        plt.plot(x, y, c = 'black', marker=".", mfc='blue', mec='blue', 
+                 markersize=80/n, linewidth = 10/n)
         
 
     # make the figure a square        
