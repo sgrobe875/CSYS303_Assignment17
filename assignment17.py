@@ -5,6 +5,7 @@
 # imports
 import matplotlib.pyplot as plt
 import math
+import numpy as np
 
 
 
@@ -142,6 +143,29 @@ def draw_lattice(n):
                     # since neighbor list is a set, duplicates will just be skipped
                     points[point1].add(point2)
                     points[point2].add(point1)
+                    
+                    
+    # build the adjacency matrix
+    
+    total_points = len(points.keys())
+    
+    # initialize matrix of all zeros
+    matrix = np.zeros((total_points, total_points))
+    
+    # list of all points
+    points_list = list(points.keys())
+    
+    # loop through all points --> point_i
+    for i in range(len(points_list)):
+        # get neighborhood of point i
+        neighbors_i = points[points_list[i]]
+        # loop through all points --> point_j
+        for j in range(len(points_list)):
+            point_j = points_list[j]
+            # if point_j connected to point_i (in this case, if they're neighbors),
+            # set i,j in the adjacency matrix to 1
+            if point_j in neighbors_i:
+                matrix.itemset((i,j), 1)
 
     
     
@@ -171,7 +195,7 @@ def draw_lattice(n):
         # plot and move on to the next point
         # scale point size and line width based on n; make points a different color
         plt.plot(x, y, c = 'black', marker=".", mfc='blue', mec='blue', 
-                 markersize=80/n, linewidth = 10/n)
+                 markersize=40/n, linewidth = 5/n)
         
 
     # make the figure a square        
@@ -179,17 +203,12 @@ def draw_lattice(n):
     
     plt.show()
     
-    # return the adjacency list
-    return points
+    # return the list of neighbors (points), and the adjacency matrix
+    return points, matrix
 
 
-# draw the lattice and get the adjacency list
-adj_list = draw_lattice(n = 8)
+# draw the lattice, get the list of neighbors, and get the adjacency matrix
+neighbors, adj_mat = draw_lattice(n = 8)
 
-# print the adjacency list
-for point in list(adj_list.keys()):
-    s = str(adj_list[point])
-    print('('+point+'): '+s)
+
     
-
-
