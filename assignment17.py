@@ -39,7 +39,7 @@ def calc_distance(coord1_string, coord2_string):
 
 # takes in edge width n, draws lattice of the corresponding size and returns the
 # adjacency list of all of the nodes within the lattice
-def draw_lattice(n): 
+def build_lattice(n): 
     # calculate some parameters based on n
     radius = n-1
     half_radius = radius/2
@@ -208,7 +208,7 @@ def draw_lattice(n):
 
 
 # draw the lattice, get the list of neighbors, and get the adjacency matrix
-neighbors, adj_mat = draw_lattice(n = 8)
+neighbors, adj_mat = build_lattice(n = 8)
 
 
     
