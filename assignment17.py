@@ -60,7 +60,7 @@ def draw_lattice(n):
           'y': 0}
     
     
-    
+    # use vertex coordinates to determine bounds (starting and ending points)
     start_x = v1['x']
     start_y = v1['y']
     end_x = v2['x']
@@ -77,22 +77,30 @@ def draw_lattice(n):
     y = start_y
     
     
-    while y != 0:
+    # do the bottom half + middle row
+    while y != 1:
+        # start at vertex1 and add to the points dictionary
         x = start_x
         key = str(x) + ',' + str(y)
         points[key] = []
         
+        # while we're within the bounds of this row
         while x != end_x:
+            # add points, moving across the row from left to right
             x += 1
             key = str(x) + ',' + str(y)
             points[key] = []
-            
+        
+        # when we've reached the end of the row, move up 1 to the next row
         y += 1
+        # widen the row by 1 each time we move up
         start_x -= 0.5
         end_x += 0.5
     
     
-    # repeat for the top half
+    # repeat for the top half (same as above but with some flipped signs)
+    
+    # start at vertex5 (top left)
     start_x = v5['x']
     start_y = v5['y']
     end_x = v4['x']
@@ -100,41 +108,24 @@ def draw_lattice(n):
     x = start_x
     y = start_y
     
+    # while we're in the top half of the hexagon
     while y != 0:
+        # add the first point in the row to the points dict
         x = start_x
         key = str(x) + ',' + str(y)
         points[key] = []
         
+        # move across the row within the bounds of the hexagon
         while x != end_x:
             x += 1
             key = str(x) + ',' + str(y)
             points[key] = []
             
+        # move down to the next row
         y -= 1
+        # widen the row by 1
         start_x -= 0.5
         end_x += 0.5
-    
-    
-    
-    # do the middle row
-    start_x = v6['x']
-    start_y = v6['y']
-    end_x = v3['x']
-    
-    x = start_x
-    y = start_y
-    
-    key = str(x) + ',' + str(y)
-    points[key] = []
-    
-    while x != end_x:
-        x += 1
-        key = str(x) + ',' + str(y)
-        points[key] = []
-        
-    start_x -= 0.5
-    end_x += 0.5
-    
     
     
     
@@ -149,8 +140,7 @@ def draw_lattice(n):
                 # the neighbor list for point1
                 if dist < 1.2:
                     points[point1].append(point2)
-    
-    
+
     
     
     # finally, plot
@@ -198,7 +188,5 @@ for point in list(adj_list.keys()):
     s = str(adj_list[point])
     print('('+point+'): '+s)
     
-
-
 
 
